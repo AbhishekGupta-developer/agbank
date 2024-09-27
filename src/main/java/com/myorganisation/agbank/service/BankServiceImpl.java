@@ -33,6 +33,7 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public BankDTO viewAccount(String accountno) {
+//        Thread.sleep(10000);
         Bank bank = bankRepository.findByAccountno(accountno);
 
         BankDTO bankDTO = BankDTO
