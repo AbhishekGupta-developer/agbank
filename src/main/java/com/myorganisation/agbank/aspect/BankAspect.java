@@ -24,20 +24,20 @@ public class BankAspect {
 
     @Before("loggingPointcut()")
     public void beforeAdviceLoggingPointcut(JoinPoint joinPoint) {
-        logger.info("@Before advice: {} method invoked! at {}",
+        logger.info("@Before advice: {} method invoked! At {}. More info: JoinPoint: {}",
                 joinPoint.getSignature().getName(),
-                FORMATTER.format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now()),
+                joinPoint.getSignature()
         );
-        logger.info("JoinPoint: {}", joinPoint.getSignature());
     }
 
     @After("loggingPointcut()")
     public void afterAdviceLoggingPointcut(JoinPoint joinPoint) {
-        logger.info("@After advice: {} method invoked! at {}",
+        logger.info("@After advice: {} method invoked! At {}. More info: JoinPoint: {}",
                 joinPoint.getSignature().getName(),
-                FORMATTER.format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now()),
+                joinPoint.getSignature()
         );
-        logger.info("JoinPoint: {}", joinPoint.getSignature());
     }
 
     @Around("loggingPointcut()")
