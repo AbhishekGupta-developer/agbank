@@ -26,4 +26,22 @@ public class BankAspect {
 
     }
 
+    @Pointcut(value = "execution(* com.myorganisation.agbank.service.BankService.checkBalance(..))")
+    public void printLogStatementsCheckBalancePointcut() {
+
+    }
+
+    @Around(value = "printLogStatementsCheckBalancePointcut()")
+    public void aroundAdvice(ProceedingJoinPoint jp) throws Throwable {
+        System.out.println("The method aroundAdvice() before invokation of  the method " + jp.getSignature().getName() + " method");
+
+        try {
+            jp.proceed();
+        } finally {
+
+        }
+
+        System.out.println("The method aroundAdvice() after invokation of  the method " + jp.getSignature().getName() + " method");
+    }
+
 }
