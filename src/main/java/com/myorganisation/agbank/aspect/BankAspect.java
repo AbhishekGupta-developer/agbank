@@ -17,6 +17,8 @@ public class BankAspect {
     //creating logger here
     Logger logger = LoggerFactory.getLogger(BankAspect.class);
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
     @Pointcut("execution(* com.myorganisation.agbank.controller.BankController.*(..))")
     public void loggingPointcut() {}
 
@@ -24,7 +26,7 @@ public class BankAspect {
     public void beforeAdviceLoggingPointcut(JoinPoint joinPoint) {
         logger.info("@Before advice: {} method invoked! at {}",
                 joinPoint.getSignature().getName(),
-                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now())
         );
         logger.info("JoinPoint: {}", joinPoint.getSignature());
     }
@@ -33,7 +35,7 @@ public class BankAspect {
     public void afterAdviceLoggingPointcut(JoinPoint joinPoint) {
         logger.info("@After advice: {} method invoked! at {}",
                 joinPoint.getSignature().getName(),
-                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now())
         );
         logger.info("JoinPoint: {}", joinPoint.getSignature());
     }
@@ -42,7 +44,7 @@ public class BankAspect {
     public Object aroundAdviceLoggingPointcut(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         logger.info("@Around advice: before invocation of {} method! at {}",
                 proceedingJoinPoint.getSignature().getName(),
-                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now())
         );
         logger.info("JoinPoint: {}", proceedingJoinPoint.getSignature());
 
@@ -51,13 +53,13 @@ public class BankAspect {
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
-            logger.info("Exception occurred: {}", e.getMessage());
+            logger.error("Exception occurred in method {}: {} - Stack trace: ", proceedingJoinPoint.getSignature().getName(), e.getMessage(), e);
             throw e;
         } finally {}
 
         logger.info("@Around advice: after invocation of {} method! at {}",
                 proceedingJoinPoint.getSignature().getName(),
-                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss").format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now())
         );
         logger.info("JoinPoint: {}", proceedingJoinPoint.getSignature());
 
