@@ -42,11 +42,13 @@ public class BankAspect {
 
     @Around("loggingPointcut()")
     public Object aroundAdviceLoggingPointcut(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        logger.info("@Around advice: before invocation of {} method! at {}",
+        long startTime = System.currentTimeMillis();
+
+        logger.info("@Around advice: before invocation of {} method! At {}. More info: JoinPoint: {}",
                 proceedingJoinPoint.getSignature().getName(),
-                FORMATTER.format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now()),
+                proceedingJoinPoint.getSignature()
         );
-        logger.info("JoinPoint: {}", proceedingJoinPoint.getSignature());
 
         //Proceed with the actual method invocation
         Object result;
@@ -55,13 +57,16 @@ public class BankAspect {
         } catch (Exception e) {
             logger.error("Exception occurred in method {}: {} - Stack trace: ", proceedingJoinPoint.getSignature().getName(), e.getMessage(), e);
             throw e;
-        } finally {}
+        }
 
-        logger.info("@Around advice: after invocation of {} method! at {}",
+        logger.info("@Around advice: after invocation of {} method! At {}. More info: JoinPoint: {}",
                 proceedingJoinPoint.getSignature().getName(),
-                FORMATTER.format(LocalDateTime.now())
+                FORMATTER.format(LocalDateTime.now()),
+                proceedingJoinPoint.getSignature()
         );
-        logger.info("JoinPoint: {}", proceedingJoinPoint.getSignature());
+
+        long timeTaken = System.currentTimeMillis() - startTime;
+        logger.info("Execution time of {} method: {} ms", proceedingJoinPoint.getSignature().getName(), timeTaken);
 
         //Return the result to the caller
         return result;
