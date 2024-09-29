@@ -24,7 +24,7 @@ public class BankAspect {
 
     @Before("loggingPointcut()")
     public void beforeAdviceLoggingPointcut(JoinPoint joinPoint) {
-        logger.info("@Before advice: {} method invoked! At {}. More info: JoinPoint: {}",
+        logger.info("@Before advice: {} method invoked! At {}. Signature: {}",
                 joinPoint.getSignature().getName(),
                 FORMATTER.format(LocalDateTime.now()),
                 joinPoint.getSignature()
@@ -33,7 +33,7 @@ public class BankAspect {
 
     @After("loggingPointcut()")
     public void afterAdviceLoggingPointcut(JoinPoint joinPoint) {
-        logger.info("@After advice: {} method invoked! At {}. More info: JoinPoint: {}",
+        logger.info("@After advice: {} method invoked! At {}. Signature: {}",
                 joinPoint.getSignature().getName(),
                 FORMATTER.format(LocalDateTime.now()),
                 joinPoint.getSignature()
@@ -44,7 +44,7 @@ public class BankAspect {
     public Object aroundAdviceLoggingPointcut(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
 
-        logger.info("@Around advice: before invocation of {} method! At {}. More info: JoinPoint: {}",
+        logger.info("@Around advice: before invocation of {} method! At {}. Signature: {}",
                 proceedingJoinPoint.getSignature().getName(),
                 FORMATTER.format(LocalDateTime.now()),
                 proceedingJoinPoint.getSignature()
@@ -59,7 +59,7 @@ public class BankAspect {
             throw e;
         }
 
-        logger.info("@Around advice: after invocation of {} method! At {}. More info: JoinPoint: {}",
+        logger.info("@Around advice: after invocation of {} method! At {}. Signature: {}",
                 proceedingJoinPoint.getSignature().getName(),
                 FORMATTER.format(LocalDateTime.now()),
                 proceedingJoinPoint.getSignature()
