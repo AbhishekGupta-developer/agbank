@@ -25,6 +25,9 @@ public class BankAspect {
     @Pointcut("execution(* com.myorganisation.agbank.controller.BankController.checkHealth(..))")
     public void loggingPointcutCheckHealth() {}
 
+    @Pointcut("execution(* com.myorganisation.agbank.controller.BankController.createDummyAccount(..))")
+    public void loggingPointcutCreateDummyAccount() {}
+
     @Before("loggingPointcutCheckHealth()")
     public void beforeAdviceLoggingPointcutUniversal(JoinPoint joinPoint) {
         logger.info("@Before advice: {} method invoked! At {}. Signature: {}",
@@ -73,6 +76,16 @@ public class BankAspect {
 
         //Return the result to the caller
         return result;
+    }
+
+    @AfterThrowing(pointcut = "loggingPointcutCreateDummyAccount()", throwing = "e")
+    public void afterThrowing(JoinPoint joinPoint, Throwable e) {
+        logger.error("@AfterThrowing advice: An exception occurred in {} method. Message: {}", joinPoint.getSignature().getName(), e.getMessage(), e);
+    }
+
+    @AfterReturning(pointcut = "loggingPointcutCreateDummyAccount()")
+    public void afterReturning(JoinPoint joinPoint) {
+        logger.info("@AfterReturning advice: {} method completed", joinPoint.getSignature().getName());
     }
 
 }
