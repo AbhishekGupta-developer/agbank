@@ -20,10 +20,13 @@ public class BankAspect {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     @Pointcut("execution(* com.myorganisation.agbank.controller.BankController.*(..))")
-    public void loggingPointcut() {}
+    public void loggingPointcutUniversal() {}
 
-    @Before("loggingPointcut()")
-    public void beforeAdviceLoggingPointcut(JoinPoint joinPoint) {
+    @Pointcut("execution(* com.myorganisation.agbank.controller.BankController.checkHealth(..))")
+    public void loggingPointcutCheckHealth() {}
+
+    @Before("loggingPointcutCheckHealth()")
+    public void beforeAdviceLoggingPointcutUniversal(JoinPoint joinPoint) {
         logger.info("@Before advice: {} method invoked! At {}. Signature: {}",
                 joinPoint.getSignature().getName(),
                 FORMATTER.format(LocalDateTime.now()),
@@ -31,8 +34,8 @@ public class BankAspect {
         );
     }
 
-    @After("loggingPointcut()")
-    public void afterAdviceLoggingPointcut(JoinPoint joinPoint) {
+    @After("loggingPointcutCheckHealth()")
+    public void afterAdviceLoggingPointcutUniversal(JoinPoint joinPoint) {
         logger.info("@After advice: {} method invoked! At {}. Signature: {}",
                 joinPoint.getSignature().getName(),
                 FORMATTER.format(LocalDateTime.now()),
@@ -40,8 +43,8 @@ public class BankAspect {
         );
     }
 
-    @Around("loggingPointcut()")
-    public Object aroundAdviceLoggingPointcut(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    @Around("loggingPointcutUniversal()")
+    public Object aroundAdviceLoggingPointcutUniversal(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
 
         logger.info("@Around advice: before invocation of {} method! At {}. Signature: {}",
